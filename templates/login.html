@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Login — Customer Churn Prediction System{% endblock %}
+
+{% block content %}
+<div style="max-width: 440px; margin: 3rem auto;">
+  <div class="glass-card">
+    <div style="text-align: center; margin-bottom: 1.5rem;">
+      <div style="width: 54px; height: 54px; background: linear-gradient(135deg, var(--primary), var(--accent-purple)); border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; color: #fff; margin-bottom: 1rem;">
+        <i data-lucide="log-in" style="width: 28px; height: 28px;"></i>
+      </div>
+      <h2>User Login</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.2rem;">Access your dashboard and prediction history</p>
+    </div>
+
+    <form action="{{ url_for('login') }}" method="POST">
+      <div class="form-group">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Enter your username" required autofocus>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.85rem;">
+        <i data-lucide="log-in" style="width: 18px;"></i> Log In
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 1.5rem; font-size: 0.88rem; color: var(--text-muted);">
+      Don't have an account? <a href="{{ url_for('register') }}" style="color: #38bdf8; font-weight: 600;">Register here</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

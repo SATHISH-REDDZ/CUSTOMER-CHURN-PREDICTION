@@ -1,0 +1,116 @@
+{
+    "best_model": "Gradient Boosting",
+    "selected_by": "ROC-AUC",
+    "metrics": {
+        "Logistic Regression": {
+            "accuracy": 0.9625090122566691,
+            "precision": 0.9492537313432836,
+            "recall": 0.9008498583569405,
+            "f1_score": 0.9244186046511628,
+            "roc_auc": 0.9889151292321685,
+            "confusion_matrix": [
+                [
+                    1017,
+                    17
+                ],
+                [
+                    35,
+                    318
+                ]
+            ]
+        },
+        "Random Forest": {
+            "accuracy": 0.9798125450612833,
+            "precision": 0.9821958456973294,
+            "recall": 0.9376770538243626,
+            "f1_score": 0.9594202898550724,
+            "roc_auc": 0.9986191856482979,
+            "confusion_matrix": [
+                [
+                    1028,
+                    6
+                ],
+                [
+                    22,
+                    331
+                ]
+            ]
+        },
+        "Decision Tree": {
+            "accuracy": 0.9863013698630136,
+            "precision": 0.9744318181818182,
+            "recall": 0.9716713881019831,
+            "f1_score": 0.9730496453900709,
+            "roc_auc": 0.9814836631032159,
+            "confusion_matrix": [
+                [
+                    1025,
+                    9
+                ],
+                [
+                    10,
+                    343
+                ]
+            ]
+        },
+        "Gradient Boosting": {
+            "accuracy": 0.989185291997116,
+            "precision": 0.9828571428571429,
+            "recall": 0.9745042492917847,
+            "f1_score": 0.9786628733997155,
+            "roc_auc": 0.9990794570988651,
+            "confusion_matrix": [
+                [
+                    1028,
+                    6
+                ],
+                [
+                    9,
+                    344
+                ]
+            ]
+        }
+    },
+    "feature_importances": [
+        {
+            "feature": "Contract_Month-to-month",
+            "importance": 0.46565702234485057
+        },
+        {
+            "feature": "InternetService_Fiber optic",
+            "importance": 0.33403718741043
+        },
+        {
+            "feature": "PaymentMethod_Electronic check",
+            "importance": 0.04449245716240487
+        },
+        {
+            "feature": "TechSupport_No",
+            "importance": 0.03810985967243536
+        },
+        {
+            "feature": "OnlineSecurity_No",
+            "importance": 0.02653814835936547
+        },
+        {
+            "feature": "TotalCharges",
+            "importance": 0.024046834051733676
+        },
+        {
+            "feature": "tenure",
+            "importance": 0.02283162903039882
+        },
+        {
+            "feature": "TechSupport_Yes",
+            "importance": 0.020513696603454024
+        },
+        {
+            "feature": "MonthlyCharges",
+            "importance": 0.01225127993167188
+        },
+        {
+            "feature": "OnlineSecurity_Yes",
+            "importance": 0.007407871906984666
+        }
+    ]
+}

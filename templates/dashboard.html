@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard Analytics — Customer Churn Prediction System{% endblock %}
+
+{% block content %}
+<div class="glass-card" style="margin-bottom: 2rem;">
+  <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <h2 style="font-size: 1.8rem; display: flex; align-items: center; gap: 0.6rem;">
+        <i data-lucide="layout-dashboard" style="color: var(--primary);"></i> Business Intelligence Dashboard
+      </h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+        Overview of customer churn statistics, risk distributions, and billing metrics across recorded predictions.
+      </p>
+    </div>
+    <div style="display: flex; gap: 0.75rem;">
+      <a href="{{ url_for('export_csv') }}" class="btn btn-secondary"><i data-lucide="download" style="width: 16px;"></i> Export CSV</a>
+      <a href="{{ url_for('predict') }}" class="btn btn-primary"><i data-lucide="zap" style="width: 16px;"></i> New Prediction</a>
+    </div>
+  </div>
+</div>
+
+<!-- Key Stat Metrics Grid -->
+<div class="metrics-grid">
+  <div class="stat-card">
+    <div class="stat-header">
+      <span>Total Predictions</span>
+      <i data-lucide="users" style="width: 20px; color: var(--primary);"></i>
+    </div>
+    <div class="stat-value">{{ stats.total_predictions }}</div>
+    <div class="stat-subtext">Total customers evaluated</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-header">
+      <span>Churn Rate</span>
+      <i data-lucide="trending-up" style="width: 20px; color: #fb7185;"></i>
+    </div>
+    <div class="stat-value" style="color: #fb7185;">{{ stats.churn_rate }}%</div>
+    <div class="stat-subtext">{{ stats.churned_count }} churned / {{ stats.retained_count }} retained</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-header">
+      <span>High Risk Customers</span>
+      <i data-lucide="alert-triangle" style="width: 20px; color: #f59e0b;"></i>
+    </div>
+    <div class="stat-value" style="color: #fbbf24;">{{ stats.high_risk_count }}</div>
+    <div class="stat-subtext">Probability ≥ 70%</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-header">
+      <span>Avg Monthly Charges</span>
+      <i data-lucide="dollar-sign" style="width: 20px; color: #34d399;"></i>
+    </div>
+    <div class="stat-value">${{ "%.2f"|format(stats.avg_monthly_charges) }}</div>
+    <div class="stat-subtext">Per customer / month</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-header">
+      <span>Avg Tenure</span>
+      <i data-lucide="clock" style="width: 20px; color: var(--accent-purple);"></i>
+    </div>
+    <div class="stat-value">{{ stats.avg_tenure }} <small style="font-size: 0.5em; font-weight: 400;">mos</small></div>
+    <div class="stat-subtext">Mean customer lifetime</div>
+  </div>
+</div>
+
+<!-- Interactive Charts Grid -->
+<div class="charts-grid">
+  <div class="chart-card">
+    <div class="chart-title">
+      <i data-lucide="pie-chart" style="color: var(--primary);"></i> Churn vs Retained Ratio
+    </div>
+    <div class="chart-container">
+      <canvas id="churnDistChart"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">
+      <i data-lucide="bar-chart-3" style="color: var(--accent-cyan);"></i> Risk Classification Breakdown
+    </div>
+    <div class="chart-container">
+      <canvas id="riskDistChart"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">
+      <i data-lucide="file-text" style="color: var(--accent-purple);"></i> Contract Distribution
+    </div>
+    <div class="chart-container">
+      <canvas id="contractDistChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<script id="stats-data" type="application/json">
+{{ stats | tojson | safe }}
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const statsElem = document.getElementById('stats-data');
+    if (statsElem && statsElem.textContent) {
+      const statsData = JSON.parse(statsElem.textContent);
+      initDashboardCharts(statsData);
+    }
+  });
+</script>
+{% endblock %}
+

@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction Result — Customer Churn Prediction System{% endblock %}
+
+{% block content %}
+{% set prob_pct = (prediction.churn_probability * 100) | round(1) %}
+{% set dash_offset = ((1.0 - prediction.churn_probability) * 314.159) | round(2) %}
+{% set stroke_color = '#f43f5e' if prediction.risk_level == 'High Risk' else ('#f59e0b' if prediction.risk_level == 'Medium Risk' else '#10b981') %}
+{% set text_color = '#fb7185' if prediction.risk_level == 'High Risk' else ('#fbbf24' if prediction.risk_level == 'Medium Risk' else '#34d399') %}
+
+<div class="glass-card" style="position: relative; overflow: hidden;">
+  <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+    <div>
+      <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">PREDICTION ID #{{ prediction.id }}</span>
+      <h2 style="font-size: 1.8rem; margin-top: 0.2rem;">Customer Prediction Analysis</h2>
+    </div>
+    <div>
+      <span class="badge {% if prediction.risk_level == 'High Risk' %}badge-high-risk{% elif prediction.risk_level == 'Medium Risk' %}badge-med-risk{% else %}badge-low-risk{% endif %}" style="font-size: 0.95rem; padding: 0.5rem 1.2rem;">
+        <i data-lucide="shield-alert" style="width: 18px;"></i> {{ prediction.risk_level }}
+      </span>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; align-items: center;">
+    
+    <!-- Left Column: Circular Probability Gauge -->
+    <div style="text-align: center; padding: 1.5rem; background: rgba(15, 23, 42, 0.4); border-radius: var(--radius-md); border: 1px solid var(--border-glass);">
+      <h4 style="color: var(--text-muted); font-weight: 500; font-size: 0.95rem; margin-bottom: 1rem;">CHURN PROBABILITY SCORE</h4>
+      
+      <div class="gauge-wrapper">
+        <svg width="180" height="180" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10" />
+          <circle class="gauge-circle" cx="60" cy="60" r="50" fill="none" 
+                  stroke="{{ stroke_color }}" 
+                  stroke-width="10" 
+                  stroke-dasharray="314.159" 
+                  stroke-dashoffset="{{ dash_offset }}" 
+                  stroke-linecap="round" />
+        </svg>
+        <div class="gauge-text">
+          <div class="gauge-percentage" style="color: {{ text_color }};">
+            {{ prob_pct }}%
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Probability</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 1.25rem;">
+        {% if prediction.churn_prediction == 1 %}
+          <div style="display: inline-flex; align-items: center; gap: 0.5rem; color: #fb7185; font-weight: 700; font-size: 1.2rem; background: rgba(244, 63, 94, 0.15); padding: 0.5rem 1.2rem; border-radius: var(--radius-sm); border: 1px solid rgba(244, 63, 94, 0.3);">
+            <i data-lucide="user-x" style="width: 22px;"></i> Customer Likely to Churn
+          </div>
+        {% else %}
+          <div style="display: inline-flex; align-items: center; gap: 0.5rem; color: #34d399; font-weight: 700; font-size: 1.2rem; background: rgba(16, 185, 129, 0.15); padding: 0.5rem 1.2rem; border-radius: var(--radius-sm); border: 1px solid rgba(16, 185, 129, 0.3);">
+            <i data-lucide="user-check" style="width: 22px;"></i> Customer Likely to Retain
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Right Column: Retention Recommendations Checklist -->
+    <div>
+      <h3 style="font-size: 1.3rem; margin-bottom: 1rem; color: #38bdf8; display: flex; align-items: center; gap: 0.5rem;">
+        <i data-lucide="lightbulb" style="width: 22px;"></i> Recommended Retention Actions
+      </h3>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+        Rule-based action plan generated based on risk score and customer subscription profile:
+      </p>
+
+      <ul class="recommendations-list">
+        {% for rec in prediction.recommendations %}
+          <li>
+            <i data-lucide="check-circle-2" style="color: var(--primary); width: 20px; height: 20px; flex-shrink: 0;"></i>
+            <span>{{ rec }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- Customer Profile Feature Summary Table -->
+<div class="glass-card">
+  <h3 style="font-size: 1.3rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+    <i data-lucide="file-text" style="color: var(--accent-purple);"></i> Customer Profile &amp; Inputs
+  </h3>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Attribute</th>
+          <th>Value</th>
+          <th>Attribute</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Customer ID</strong></td>
+          <td>{{ prediction.customer_id }}</td>
+          <td><strong>Contract Type</strong></td>
+          <td><span class="badge" style="background: rgba(99,102,241,0.2); color: #a5b4fc;">{{ prediction.contract }}</span></td>
+        </tr>
+        <tr>
+          <td><strong>Gender</strong></td>
+          <td>{{ prediction.gender }}</td>
+          <td><strong>Internet Service</strong></td>
+          <td>{{ prediction.internet_service }}</td>
+        </tr>
+        <tr>
+          <td><strong>Senior Citizen</strong></td>
+          <td>{{ 'Yes' if prediction.senior_citizen == 1 else 'No' }}</td>
+          <td><strong>Payment Method</strong></td>
+          <td>{{ prediction.payment_method }}</td>
+        </tr>
+        <tr>
+          <td><strong>Partner / Dependents</strong></td>
+          <td>Partner: {{ prediction.partner }} | Dependents: {{ prediction.dependents }}</td>
+          <td><strong>Paperless Billing</strong></td>
+          <td>{{ prediction.paperless_billing }}</td>
+        </tr>
+        <tr>
+          <td><strong>Tenure</strong></td>
+          <td>{{ prediction.tenure }} months</td>
+          <td><strong>Monthly Charges</strong></td>
+          <td>${{ "%.2f"|format(prediction.monthly_charges) }}</td>
+        </tr>
+        <tr>
+          <td><strong>Tech Support</strong></td>
+          <td>{{ prediction.tech_support }}</td>
+          <td><strong>Total Charges</strong></td>
+          <td>${{ "%.2f"|format(prediction.total_charges) }}</td>
+        </tr>
+        <tr>
+          <td><strong>Online Security</strong></td>
+          <td>{{ prediction.online_security }}</td>
+          <td><strong>Created At</strong></td>
+          <td>{{ prediction.created_at }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+    <a href="{{ url_for('predict') }}" class="btn btn-primary"><i data-lucide="plus-circle" style="width: 18px;"></i> Predict Another Customer</a>
+    <a href="{{ url_for('customers') }}" class="btn btn-secondary"><i data-lucide="list" style="width: 18px;"></i> Customer History</a>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary"><i data-lucide="layout-dashboard" style="width: 18px;"></i> Dashboard Analytics</a>
+  </div>
+</div>
+{% endblock %}
+

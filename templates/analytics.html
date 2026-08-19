@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}ML Analytics — Customer Churn Prediction System{% endblock %}
+
+{% block content %}
+<div class="glass-card" style="margin-bottom: 2rem;">
+  <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <h2 style="font-size: 1.8rem; display: flex; align-items: center; gap: 0.6rem;">
+        <i data-lucide="bar-chart-2" style="color: var(--primary);"></i> Machine Learning Model Analytics
+      </h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+        Empirical performance evaluation across 4 trained classification algorithms on 7,043 Telco records.
+      </p>
+    </div>
+    {% if metrics_data.best_model %}
+      <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); padding: 0.5rem 1rem; border-radius: var(--radius-sm); color: #34d399; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+        <i data-lucide="award" style="width: 20px;"></i> Selected Production Model: {{ metrics_data.best_model }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Metrics Comparison Table -->
+<div class="glass-card">
+  <h3 style="font-size: 1.3rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+    <i data-lucide="table" style="color: var(--accent-cyan);"></i> Classification Benchmark Comparison
+  </h3>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Algorithm</th>
+          <th>Accuracy</th>
+          <th>Precision</th>
+          <th>Recall</th>
+          <th>F1-Score</th>
+          <th>ROC-AUC</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if metrics_data.metrics %}
+          {% for model_name, m in metrics_data.metrics.items() %}
+            <tr {% if model_name == metrics_data.best_model %}style="background: rgba(99, 102, 241, 0.12);"{% endif %}>
+              <td><strong>{{ model_name }}</strong></td>
+              <td>{{ "%.2f"|format(m.accuracy * 100) }}%</td>
+              <td>{{ "%.2f"|format(m.precision * 100) }}%</td>
+              <td>{{ "%.2f"|format(m.recall * 100) }}%</td>
+              <td>{{ "%.2f"|format(m.f1_score * 100) }}%</td>
+              <td><strong>{{ "%.4f"|format(m.roc_auc) }}</strong></td>
+              <td>
+                {% if model_name == metrics_data.best_model %}
+                  <span class="badge badge-low-risk"><i data-lucide="check" style="width: 14px;"></i> Production Best</span>
+                {% else %}
+                  <span class="badge" style="background: rgba(255,255,255,0.05); color: var(--text-muted);">Evaluated</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+              Model metrics file not found. Run <code>python scripts/train_model.py</code> to train and evaluate models.
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Analytics Charts -->
+<div class="charts-grid">
+  <div class="chart-card">
+    <div class="chart-title">
+      <i data-lucide="bar-chart-2" style="color: var(--primary);"></i> Model Performance Benchmark Metrics (%)
+    </div>
+    <div class="chart-container">
+      <canvas id="modelComparisonChart"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">
+      <i data-lucide="sliders" style="color: var(--accent-cyan);"></i> Top Predictor Feature Importances (%)
+    </div>
+    <div class="chart-container">
+      <canvas id="featureImportanceChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<script id="metrics-data" type="application/json">
+{{ metrics_data | tojson | safe }}
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const metricsElem = document.getElementById('metrics-data');
+    if (metricsElem && metricsElem.textContent) {
+      const metricsData = JSON.parse(metricsElem.textContent);
+      initAnalyticsCharts(metricsData);
+    }
+  });
+</script>
+{% endblock %}
+

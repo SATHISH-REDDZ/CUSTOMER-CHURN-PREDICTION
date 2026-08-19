@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Customer Churn Prediction System{% endblock %}
+
+{% block content %}
+<div class="glass-card result-hero"
+  style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.12)); border: 1px solid rgba(99, 102, 241, 0.3);">
+  <div
+    style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.4); padding: 0.35rem 1rem; border-radius: 999px; font-size: 0.85rem; color: #a5b4fc; margin-bottom: 1.25rem;">
+    <i data-lucide="sparkles" style="width: 16px;"></i> Machine Learning Powered Predictive Analytics
+  </div>
+
+  <h1
+    style="font-size: 2.8rem; line-height: 1.2; margin-bottom: 1rem; background: linear-gradient(135deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+    Predict &amp; Prevent Customer Churn Before It Happens
+  </h1>
+
+  <p style="max-width: 780px; margin: 0 auto 2rem auto; font-size: 1.1rem; color: var(--text-muted);">
+    Analyze customer demographics, billing history, and service subscriptions using our
+    <strong>Gradient Boosting Classifier</strong> model. Get immediate churn probability, risk classification, and
+    tailored retention recommendations.
+  </p>
+
+  <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+    <a href="{{ url_for('predict') }}" class="btn btn-primary" style="padding: 0.9rem 2rem; font-size: 1.05rem;">
+      <i data-lucide="zap" style="width: 20px;"></i> Start New Churn Prediction
+    </a>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary" style="padding: 0.9rem 2rem; font-size: 1.05rem;">
+      <i data-lucide="layout-dashboard" style="width: 20px;"></i> View Dashboard Analytics
+    </a>
+  </div>
+</div>
+
+<!-- Features Grid -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+  <div class="glass-card glass-card-hover">
+    <div
+      style="width: 48px; height: 48px; background: rgba(99, 102, 241, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); margin-bottom: 1rem;">
+      <i data-lucide="cpu" style="width: 26px; height: 26px;"></i>
+    </div>
+    <h3 style="margin-bottom: 0.5rem; font-size: 1.2rem;">4 ML Algorithms Evaluated</h3>
+    <p style="color: var(--text-muted); font-size: 0.92rem;">
+      Trained and compared Logistic Regression, Random Forest, Decision Tree, and Gradient Boosting based on ROC-AUC
+      performance.
+    </p>
+  </div>
+
+  <div class="glass-card glass-card-hover">
+    <div
+      style="width: 48px; height: 48px; background: rgba(6, 182, 212, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent-cyan); margin-bottom: 1rem;">
+      <i data-lucide="shield-alert" style="width: 26px; height: 26px;"></i>
+    </div>
+    <h3 style="margin-bottom: 0.5rem; font-size: 1.2rem;">3-Tier Risk Categorization</h3>
+    <p style="color: var(--text-muted); font-size: 0.92rem;">
+      Classifies customers into Low Risk (&lt;30%), Medium Risk (30% to 70%), and High Risk (&gt;=70%) for clear
+      decision making.
+    </p>
+  </div>
+
+  <div class="glass-card glass-card-hover">
+    <div
+      style="width: 48px; height: 48px; background: rgba(168, 85, 247, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent-purple); margin-bottom: 1rem;">
+      <i data-lucide="list-checks" style="width: 26px; height: 26px;"></i>
+    </div>
+    <h3 style="margin-bottom: 0.5rem; font-size: 1.2rem;">Actionable Retention Plans</h3>
+    <p style="color: var(--text-muted); font-size: 0.92rem;">
+      Generates customized, rule-based retention action items to retain high-risk telecom subscribers effectively.
+    </p>
+  </div>
+
+  <div class="glass-card glass-card-hover">
+    <div
+      style="width: 48px; height: 48px; background: rgba(16, 185, 129, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #34d399; margin-bottom: 1rem;">
+      <i data-lucide="database" style="width: 26px; height: 26px;"></i>
+    </div>
+    <h3 style="margin-bottom: 0.5rem; font-size: 1.2rem;">SQLite &amp; History Management</h3>
+    <p style="color: var(--text-muted); font-size: 0.92rem;">
+      Persists prediction logs, provides search and risk filtering, user authentication, and 1-click CSV data export.
+    </p>
+  </div>
+</div>
+{% endblock %}

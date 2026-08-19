@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}About — Customer Churn Prediction System{% endblock %}
+
+{% block content %}
+<div class="glass-card" style="margin-bottom: 2rem;">
+  <h2 style="font-size: 2rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.6rem;">
+    <i data-lucide="info" style="color: var(--primary);"></i> About Customer Churn Prediction System
+  </h2>
+  <p style="color: var(--text-muted); font-size: 1.05rem;">
+    An end-to-end Machine Learning web application designed to identify telecom subscribers at risk of churn, analyze customer behavior drivers, and provide actionable retention interventions.
+  </p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+  <!-- Problem Statement -->
+  <div class="glass-card">
+    <h3 style="color: #38bdf8; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+      <i data-lucide="help-circle"></i> Problem Statement
+    </h3>
+    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;">
+      Telecom service providers face severe revenue loss when customers cancel their subscriptions. Manually auditing thousands of account profiles to identify dissatisfied or churn-prone customers is inefficient and error-prone. This application addresses that problem by automatically evaluating subscription features, computing churn probability, and categorizing account risk before cancellation occurs.
+    </p>
+  </div>
+
+  <!-- Machine Learning Pipeline -->
+  <div class="glass-card">
+    <h3 style="color: var(--accent-purple); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+      <i data-lucide="cpu"></i> Preprocessing & ML Workflow
+    </h3>
+    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;">
+      The 7,043 Telco customer records are processed through a Scikit-Learn <code>ColumnTransformer</code>. 
+      Numerical attributes (<em>SeniorCitizen, tenure, MonthlyCharges, TotalCharges</em>) are normalized using <code>StandardScaler</code>. 
+      Categorical features are encoded using <code>OneHotEncoder</code>. Models are evaluated using 80/20 train-test split, and the best-performing model is selected via ROC-AUC.
+    </p>
+  </div>
+</div>
+
+<!-- Algorithms Evaluated -->
+<div class="glass-card">
+  <h3 style="margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+    <i data-lucide="layers" style="color: #34d399;"></i> Evaluated Machine Learning Algorithms
+  </h3>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
+    <div style="background: rgba(15,23,42,0.5); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-glass);">
+      <h4 style="color: #fff; margin-bottom: 0.4rem;">Logistic Regression</h4>
+      <p style="font-size: 0.88rem; color: var(--text-muted);">Baseline statistical classification algorithm estimating probability using sigmoid activation function.</p>
+    </div>
+
+    <div style="background: rgba(15,23,42,0.5); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-glass);">
+      <h4 style="color: #fff; margin-bottom: 0.4rem;">Decision Tree</h4>
+      <p style="font-size: 0.88rem; color: var(--text-muted);">Tree-structured model splitting data on feature conditions to establish decision boundaries.</p>
+    </div>
+
+    <div style="background: rgba(15,23,42,0.5); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-glass);">
+      <h4 style="color: #fff; margin-bottom: 0.4rem;">Random Forest</h4>
+      <p style="font-size: 0.88rem; color: var(--text-muted);">Ensemble of randomized decision trees reducing variance and providing feature importance rankings.</p>
+    </div>
+
+    <div style="background: rgba(99,102,241,0.15); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--primary-glow);">
+      <h4 style="color: #a5b4fc; margin-bottom: 0.4rem;">Gradient Boosting (Selected)</h4>
+      <p style="font-size: 0.88rem; color: var(--text-muted);">Sequential boosting ensemble optimizing residual errors. Achieved highest ROC-AUC score.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Technology Stack Summary Table -->
+<div class="glass-card">
+  <h3 style="margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+    <i data-lucide="code-2" style="color: var(--accent-cyan);"></i> Technology Stack
+  </h3>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Technology Used</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Programming Language</td><td>Python 3.14</td></tr>
+        <tr><td>Web Backend</td><td>Flask Framework, Werkzeug Security</td></tr>
+        <tr><td>Machine Learning</td><td>Scikit-Learn, Joblib</td></tr>
+        <tr><td>Data Processing</td><td>Pandas, NumPy</td></tr>
+        <tr><td>Database Storage</td><td>SQLite 3</td></tr>
+        <tr><td>Frontend UI</td><td>HTML5, CSS3 Glassmorphism, JavaScript, Chart.js, Lucide Icons</td></tr>
+        <tr><td>Testing Framework</td><td>Pytest, Pytest-Flask</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

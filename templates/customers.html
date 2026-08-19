@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Customer History — Customer Churn Prediction System{% endblock %}
+
+{% block content %}
+<div class="glass-card" style="margin-bottom: 1.5rem;">
+  <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <h2 style="font-size: 1.8rem; display: flex; align-items: center; gap: 0.6rem;">
+        <i data-lucide="users" style="color: var(--primary);"></i> Prediction History & Customer Records
+      </h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+        Manage stored predictions, filter by customer risk level, search attributes, and export logs.
+      </p>
+    </div>
+    <div style="display: flex; gap: 0.75rem;">
+      <a href="{{ url_for('export_csv') }}" class="btn btn-secondary"><i data-lucide="download" style="width: 16px;"></i> Export to CSV</a>
+      <a href="{{ url_for('predict') }}" class="btn btn-primary"><i data-lucide="plus-circle" style="width: 16px;"></i> New Prediction</a>
+    </div>
+  </div>
+
+  <!-- Search & Risk Filter Bar -->
+  <form action="{{ url_for('customers') }}" method="GET" style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 240px;">
+      <input type="text" name="q" class="form-control" placeholder="Search by Customer ID, Contract, or Payment Method..." value="{{ search_query }}">
+    </div>
+    <div style="width: 180px;">
+      <select name="risk" class="form-select" onchange="this.form.submit()">
+        <option value="all" {% if risk_filter == 'all' %}selected{% endif %}>All Risk Levels</option>
+        <option value="High Risk" {% if risk_filter == 'High Risk' %}selected{% endif %}>High Risk Only</option>
+        <option value="Medium Risk" {% if risk_filter == 'Medium Risk' %}selected{% endif %}>Medium Risk Only</option>
+        <option value="Low Risk" {% if risk_filter == 'Low Risk' %}selected{% endif %}>Low Risk Only</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-secondary"><i data-lucide="search" style="width: 16px;"></i> Search</button>
+    {% if search_query or risk_filter != 'all' %}
+      <a href="{{ url_for('customers') }}" class="btn btn-secondary" style="color: #fb7185;">Reset Filters</a>
+    {% endif %}
+  </form>
+</div>
+
+<!-- History Records Table -->
+<div class="glass-card">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Customer ID</th>
+          <th>Contract</th>
+          <th>Tenure</th>
+          <th>Monthly</th>
+          <th>Prediction</th>
+          <th>Probability</th>
+          <th>Risk Level</th>
+          <th>Date</th>
+          <th style="text-align: right;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if predictions %}
+          {% for p in predictions %}
+            <tr>
+              <td><strong>{{ p.customer_id }}</strong></td>
+              <td>{{ p.contract }}</td>
+              <td>{{ p.tenure }} mos</td>
+              <td>${{ "%.2f"|format(p.monthly_charges) }}</td>
+              <td>
+                {% if p.churn_prediction == 1 %}
+                  <span style="color: #fb7185; font-weight: 600;">Churn</span>
+                {% else %}
+                  <span style="color: #34d399; font-weight: 600;">No Churn</span>
+                {% endif %}
+              </td>
+              <td><strong>{{ (p.churn_probability * 100) | round(1) }}%</strong></td>
+              <td>
+                <span class="badge {% if p.risk_level == 'High Risk' %}badge-high-risk{% elif p.risk_level == 'Medium Risk' %}badge-med-risk{% else %}badge-low-risk{% endif %}">
+                  {{ p.risk_level }}
+                </span>
+              </td>
+              <td style="font-size: 0.85rem; color: var(--text-muted);">{{ p.created_at[:16] }}</td>
+              <td style="text-align: right;">
+                <div style="display: inline-flex; gap: 0.5rem;">
+                  <a href="{{ url_for('result', prediction_id=p.id) }}" class="btn btn-sm btn-secondary" title="View Details">
+                    <i data-lucide="eye" style="width: 14px;"></i>
+                  </a>
+                  <form action="{{ url_for('delete_prediction_route', prediction_id=p.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete prediction record #{{ p.id }}?');">
+                    <button type="submit" class="btn btn-sm btn-danger" title="Delete Record">
+                      <i data-lucide="trash-2" style="width: 14px;"></i>
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="9" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+              <i data-lucide="inbox" style="width: 40px; height: 40px; stroke-width: 1.5; margin-bottom: 0.5rem; display: block; margin: 0 auto;"></i>
+              No customer prediction records found matching your filters.
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
