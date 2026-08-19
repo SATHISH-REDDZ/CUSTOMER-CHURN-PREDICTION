@@ -23,23 +23,26 @@
         <div class="brand-icon">
           <i data-lucide="activity" style="color: #fff; width: 22px; height: 22px;"></i>
         </div>
-        <span>ChurnGuard <small style="font-size: 0.65em; opacity: 0.7; font-weight: 400;">ML AI</small></span>
+        <div class="brand-text">
+          <span>ChurnGuard</span>
+          <span class="brand-badge">AI</span>
+        </div>
       </a>
 
       <ul class="nav-links">
-        <li><a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}"><i data-lucide="home" style="width: 16px;"></i> Home</a></li>
-        <li><a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}"><i data-lucide="layout-dashboard" style="width: 16px;"></i> Dashboard</a></li>
-        <li><a href="{{ url_for('predict') }}" class="nav-link {% if request.endpoint == 'predict' %}active{% endif %}"><i data-lucide="zap" style="width: 16px;"></i> Predict Churn</a></li>
-        <li><a href="{{ url_for('customers') }}" class="nav-link {% if request.endpoint == 'customers' %}active{% endif %}"><i data-lucide="users" style="width: 16px;"></i> Customer History</a></li>
-        <li><a href="{{ url_for('analytics') }}" class="nav-link {% if request.endpoint == 'analytics' %}active{% endif %}"><i data-lucide="bar-chart-2" style="width: 16px;"></i> ML Analytics</a></li>
-        <li><a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}"><i data-lucide="info" style="width: 16px;"></i> About</a></li>
+        <li><a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}"><i data-lucide="home"></i> <span>Home</span></a></li>
+        <li><a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a></li>
+        <li><a href="{{ url_for('predict') }}" class="nav-link {% if request.endpoint == 'predict' %}active{% endif %}"><i data-lucide="zap"></i> <span>Predict Churn</span></a></li>
+        <li><a href="{{ url_for('customers') }}" class="nav-link {% if request.endpoint == 'customers' %}active{% endif %}"><i data-lucide="users"></i> <span>History</span></a></li>
+        <li><a href="{{ url_for('analytics') }}" class="nav-link {% if request.endpoint == 'analytics' %}active{% endif %}"><i data-lucide="bar-chart-2"></i> <span>Analytics</span></a></li>
+        <li><a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}"><i data-lucide="info"></i> <span>About</span></a></li>
         
         {% if logged_in %}
-          <li><span class="nav-link" style="color: #38bdf8;"><i data-lucide="user" style="width: 16px;"></i> {{ username }}</span></li>
-          <li><a href="{{ url_for('logout') }}" class="nav-link btn-secondary" style="padding: 0.4rem 0.8rem;"><i data-lucide="log-out" style="width: 16px;"></i> Logout</a></li>
+          <li><span class="nav-user"><i data-lucide="user"></i> {{ username }}</span></li>
+          <li><a href="{{ url_for('logout') }}" class="btn-nav-secondary"><i data-lucide="log-out"></i> Logout</a></li>
         {% else %}
-          <li><a href="{{ url_for('login') }}" class="nav-link"><i data-lucide="log-in" style="width: 16px;"></i> Login</a></li>
-          <li><a href="{{ url_for('register') }}" class="btn-nav-primary"><i data-lucide="user-plus" style="width: 16px;"></i> Register</a></li>
+          <li><a href="{{ url_for('login') }}" class="nav-link"><i data-lucide="log-in"></i> Login</a></li>
+          <li><a href="{{ url_for('register') }}" class="btn-nav-primary"><i data-lucide="user-plus"></i> Register</a></li>
         {% endif %}
       </ul>
     </div>
