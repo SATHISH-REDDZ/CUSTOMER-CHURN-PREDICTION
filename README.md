@@ -119,6 +119,8 @@ cd "CUSTOMER CHURN PREDICTION"
 python -m venv venv
 # On Windows:
 venv\Scripts\activate
+# On Linux/macOS:
+source venv/bin/activate
 ```
 
 ### 2. Install Dependencies
@@ -143,7 +145,7 @@ python scripts/create_database.py
 
 ### 5. Run Automated Tests
 ```bash
-pytest tests/ -v
+python -m pytest tests/ -v
 ```
 
 ### 6. Launch Flask Web Application
@@ -162,6 +164,12 @@ Open your browser at `http://127.0.0.1:5000`.
 | **Decision Tree** | 98.63% | 97.44% | 97.17% | 97.30% | 0.9815 | Evaluated |
 | **Random Forest** | 97.98% | 98.22% | 93.77% | 95.94% | 0.9986 | Evaluated |
 | **Logistic Regression** | 96.25% | 94.93% | 90.08% | 92.44% | 0.9889 | Evaluated |
+
+---
+
+## 🎯 Conclusion
+
+The Customer Churn Prediction System successfully demonstrates the use of Machine Learning to identify customers who are likely to leave a company. By analyzing historical customer data and training predictive models, the application provides accurate churn predictions that can help businesses improve customer retention. The project combines data preprocessing, exploratory data analysis, model evaluation, and a user-friendly Flask web interface to deliver an effective end-to-end solution.
 
 ---
 
